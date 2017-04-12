@@ -1,0 +1,12 @@
+git init # in a root of a local repository
+git remote add origin master "link" # origin is a name for github
+git pull origin master # pull remote files initialized in github
+git add . # adding all new files in directory and subdirectory
+git commit -a -m
+git push -u origin master #adds local trackingato
+
+#Atom plugins for Latex
+#language-latex (syntax highlighting)
+#latex (compiles using pdflatex) ctrl alt b (build), ctrl alt c (clean)
+#pdf-view
+
