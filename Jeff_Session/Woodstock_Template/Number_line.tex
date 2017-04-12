@@ -1,0 +1,109 @@
+\makeatletter
+\newif\ifnl@mixednumbers
+\newif\ifnl@ticksabove
+\newif\ifnl@isnumberto
+\tikzset{% http://tex.stackexchange.com/a/159856/ - Claudio Fiandrino
+  number line/.code={
+    \tikzset{
+      /number line/.cd,%
+      #1
+    }
+  },
+  /number line/.cd,
+  dot/.store in=\nl@dot,
+  dot opacity/.store in=\nl@dotopacity,
+  fill/.store in=\nl@fill,
+  fraction/.store in=\nl@fraction,
+  h scale/.store in=\nl@hscale,
+  line height/.store in=\nl@lineht,
+  line above/.store in=\nl@lineabove,
+  line below/.store in=\nl@linebelow,
+  mark at/.store in=\nl@markat,
+  max/.store in=\nl@max,
+  min/.store in=\nl@min,
+  mixed numbers/.is if=nl@mixednumbers,
+  mixed numbers/.default=true,
+  number to/.store in=\nl@numberto,
+  number from/.store in=\nl@numberfrom,
+  ticks above/.is if=nl@ticksabove,
+  ticks above/.default=true,
+  v scale/.store in=\nl@vscale,
+  fraction=4,
+  v scale=1.2,
+  h scale=4,
+  max=3,
+  min=0,
+  number to={7/4},
+  number from=0,
+  mixed numbers=false,
+  fill=orange,
+  dot=green,
+  dot opacity=.75,
+  ticks above,
+  mark at=,
+  line height=0.2,
+  line above=0.2,
+  line below=0.2,
+}
+\newcommand*\tnl{% modified from ref: WeCanLearnAnything at http://tex.stackexchange.com/questions/267921/macro-for-mixed-numbers-on-number-line-tikz (but I doubt this is the original source)
+  \begin{scope}[xscale=\nl@hscale,yscale=\nl@vscale]
+    \edef\tempa{none}%
+    \edef\tempb{\nl@numberto}%
+    \ifx\tempa\tempb
+      \nl@isnumbertofalse
+    \else\nl@isnumbertotrue
+      \filldraw[\nl@fill] (\nl@numberfrom,0) rectangle (\nl@numberto,\nl@lineht);% shaded portion of number line
+    \fi
+    \draw
+    (\nl@min,0)--(\nl@max,0)% lower part of x-axis
+    (\nl@min,\nl@lineht)--(\nl@max,\nl@lineht);% higher part of x-axis
+    \foreach \x in {\nl@min,...,\nl@max}
+      \node [anchor=mid] at (\x,-0.5) {\x};% whole numbers underneath number line
+    \pgfmathsetmacro\nl@maxfrac{int(\nl@max*\nl@fraction)}
+    \pgfmathsetmacro\nl@minfrac{int(\nl@min*\nl@fraction)}
+    \foreach \x in {\nl@minfrac,...,\nl@maxfrac}% fractional tick marks and numbers above number line
+    {%
+      \draw (\x/\nl@fraction,-\nl@linebelow)--(\x/\nl@fraction,\nl@lineht);
+      \ifnl@ticksabove
+        \node[above] at (\x/\nl@fraction,{\nl@lineht+0.05}) {$\frac{\x}{\nl@fraction}$}; % draw tick and mark fraction above line
+      \fi
+      \ifnl@mixednumbers
+        \pgfmathsetmacro\intbit{int(\x/\nl@fraction)}% integer bit
+        \pgfmathsetmacro\fracbit{int(\x-\nl@fraction*\intbit)}% proper fraction bit
+        \ifnum\intbit=0\let\intbit\relax\fi % don't print 0 in mixed numbers
+        \ifnum\fracbit=0\else
+          \node [anchor=mid] at (\x/\nl@fraction,{-\nl@linebelow-0.3}) {$\intbit\frac{\fracbit}{\nl@fraction}$}; % mark the mixed number below the line
+        \fi
+      \fi
+    }%
+    \ifnl@isnumberto
+      \fill[\nl@dot,opacity=\nl@dotopacity] (\nl@numberto,.5*\nl@lineht) circle[x radius=\nl@lineht cm/\nl@hscale,y radius=\nl@lineht cm/\nl@vscale];% dot
+    \fi
+    \foreach \i in \nl@markat
+    {%
+      \draw (\i,0) -- (\i,{\nl@lineht+\nl@lineabove}) node [above] {\i};% draw tick to node above line to mark point specified with mark at
+      \fill[\nl@dot,opacity=\nl@dotopacity] (\i,.5*\nl@lineht) circle[x radius=\nl@lineht cm/\nl@hscale,y radius=\nl@lineht cm/\nl@vscale];% dot
+    };
+  \end{scope}}
+\NewDocumentCommand \NumberLine { s O {} }{%
+  \IfBooleanTF {#1}{%
+    \tikz[number line={mixed numbers=false,#2}]\tnl;%
+  }{%
+    \tikz[number line={mixed numbers=true,#2}]\tnl;%
+  }}
+\makeatother
+
+
+
+%\NumberLine*[
+%  dot=blue,
+%  dot opacity=.75,
+%  fill=blue,
+%  fraction=1,
+%  ticks above=false,
+%  min=-3,
+%  number to=none,
+%  h scale=5,
+%  mark at={13/6,14/6,0.7,0.9},
+%]
+

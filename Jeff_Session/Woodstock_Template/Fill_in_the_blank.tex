@@ -1,0 +1,153 @@
+%\documentclass[fleqn]{article}
+%\documentclass{beamer}
+
+%\usepackage{xparse}
+%\usepackage{tikz}
+%   \usetikzlibrary{calc}
+%\usepackage{mathtools}
+
+\makeatletter
+\newlength\fillb@width
+\def\fillb@widthfactor{1.75}
+\newif\iffillbhideanswer
+\fillbhideanswertrue
+\tikzset{
+   every fill in box/.style={
+     inner xsep=0pt,
+     minimum height=3ex,
+     align=center,
+     font={\sffamily\slshape},
+   },
+   colored box/.style={
+      every fill in box,
+     % fill=yellow!50!white,
+       fill=orange!28!white,
+   },
+   framed box/.style={
+      every fill in box,
+      draw,
+   },
+   underline style/.style={},
+   underlined box/.style={
+      every fill in box,
+      append after command={%
+         \pgfextra{\begin{pgfinterruptpath}
+            \draw [underline style] (\tikzlastnode.south west)
+                  -- (\tikzlastnode.south east);
+         \end{pgfinterruptpath}}
+      },
+   },
+   bracket style/.style={},
+   underbracked box/.style={
+      every fill in box,
+      append after command={%
+         \pgfextra{\begin{pgfinterruptpath}
+            \draw [bracket style] ($(\tikzlastnode.south west)+(0,2pt)$)
+                  |- (\tikzlastnode.south)
+                  -| ($(\tikzlastnode.south east)+(0,2pt)$);
+         \end{pgfinterruptpath}}
+      },
+   },
+   underoverbracked box/.style={
+      every fill in box,
+      append after command={%
+         \pgfextra{\begin{pgfinterruptpath}
+            \draw [bracket style] ($(\tikzlastnode.north west)-(0,2pt)$)
+                  |- (\tikzlastnode.north)
+                  -| ($(\tikzlastnode.north east)-(0,2pt)$);
+            \draw [bracket style] ($(\tikzlastnode.south west)+(0,2pt)$)
+                  |- (\tikzlastnode.south)
+                  -| ($(\tikzlastnode.south east)+(0,2pt)$);
+         \end{pgfinterruptpath}}
+      },
+   },
+   fill in/.style={
+      colored box,
+      framed box,
+   },
+}
+\NewDocumentCommand { \fillb@hide } { m } {%
+   \iffillbhideanswer
+      \phantom{#1}%
+   \else
+      #1%
+   \fi
+}
+\NewDocumentCommand { \fillb@makebox }{ m }{%
+   \settowidth{\fillb@width}{\tikz\node[fill in]{#1};}%
+   \begin{tikzpicture}[baseline=(fill in node.base)]
+      \node (fill in node) [text width=\fillb@widthfactor*\fillb@width,fill in] {%
+         \fillb@hide{#1}%
+      };
+   \end{tikzpicture}%
+}
+\NewDocumentCommand { \fillb } { s d{<}{>} o m }{{%
+   \IfBooleanT{#1}{\fillbhideanswerfalse}%
+   \IfValueT{#2}{\only<#2>{\fillbhideanswerfalse}}%
+   \IfValueT{#3}{\tikzset{fill in/.style={#3}}}%
+   \ifmmode
+      \mathchoice
+         {\fillb@makebox{$\displaystyle#4$}}
+         {\fillb@makebox{$\textstyle#4$}}
+         {\fillb@makebox{$\scriptstyle#4$}}
+         {\fillb@makebox{$\scriptscriptstyle#4$}}
+   \else
+      \fillb@makebox{#4}%
+   \fi
+   \IfValueT{#2}{}%
+}}
+\makeatother
+
+%\begin{document}
+% STYLE SETTING EXAMPLES
+%\tikzset{colored box/.append style={fill=black!15}}
+%\tikzset{fill in/.style={framed box}}
+%\tikzset{fill in/.style={underlined box}}
+%\tikzset{underline style/.style={densely dotted,thick}}
+%\tikzset{fill in/.style={underbracked box}}
+%\tikzset{fill in/.style={underoverbracked box}}
+%\tikzset{bracket style/.style={gray,thick}}
+%\fillbhideanswerfalse
+
+
+% ARTICLE/BOOK EXAMPLES
+
+%A \fib{short} example with math $1 + 2^{\fib{2}} = \fib{5} = \sqrt{25}$.
+
+%\vspace{2cm}
+%In \fib{text} mode and math $1 + 3 = \fib{4} = \fib{\frac{8}{2}}$
+%\begin{equation}
+%1 + 3 = \fib{4} = \fib{\frac{8}{2}}
+%\end{equation}
+%\begin{equation}
+%(a + b)^2 = \fib{a^2 + 2ab + b^2}
+%\end{equation}
+%\begin{equation}
+%\begin{pmatrix}
+%1 \\ 2 \\ 3
+%\end{pmatrix}
+%\times
+%\begin{pmatrix}
+%4 \\ 5 \\ 6
+%\end{pmatrix}
+%=
+%\fib{\begin{pmatrix}
+%	-3 \\ 6 \\ -3
+%	\end{pmatrix}}
+%\end{equation}
+%With an asterisk, i.e. \verb+\fib*+, the \fib*{solution} is always visible.
+%The optional argument can be used to change \fib*[underlined box]{styles} locally.
+
+
+% BEAMER EXAMPLES
+%\begin{frame}{Beamer example 1}
+%   \only<2->{\fillbhideanswerfalse}
+%   A \fillb{short} example with math $1 + 2^{\fillb{2}} = \fillb{5} =
+%   \sqrt{25}$.
+%\end{frame}
+%\begin{frame}{Beamer example 2}
+%   A \fillb<2->{short} example with math $1 + 2^{\fillb<3->{2}} =
+%   \fillb<4->{5} = \sqrt{25}$.
+%\end{frame}
+
+%\end{document}

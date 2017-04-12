@@ -1,0 +1,177 @@
+%  macro \factorize as above
+\catcode`\_ 11
+
+% This code (non-expandable) produces
+% {{}{}{N}} followed with successive braced triplets
+% {{p}{k}{m}} where p is a prime factor of N, 
+% k its exponent in N, and m is the result of dividing
+% N by p^k and all previous powers of smaller primes
+% So the last triplet has m=1
+
+% The code uses package xint to be able to deal
+% with numbers larger than the TeX limit of 2^{31}-1
+% on count registers. 
+
+\def\factorize#1{%
+    \edef\factorize_N{#1}%
+    \def\factorize_exp{0}%
+    \edef\factors{{{}{}{\factorize_N}}}%
+    \factorize_i
+}
+
+\def\factorize_i{%
+    \if\xintOdd{\factorize_N}1%
+       \expandafter \factorize_ii
+    \else
+       \edef\factorize_exp{\xintInc{\factorize_exp}}%
+       \edef\factorize_N{\xintHalf{\factorize_N}}%
+       \expandafter \factorize_i
+    \fi
+}
+
+\def\factorize_ii{%
+    \if\xintSgn{\factorize_exp}1%
+          \edef\factors{\factors{{2}{\factorize_exp}{\factorize_N}}}%
+    \fi
+    \if\expandafter\XINT_isOne\expandafter{\factorize_N}1%
+    \else
+       \def\factorize_M{3}%
+       \def\factorize_exp{0}%
+       \expandafter \factorize_iii
+    \fi
+}
+
+\def\factorize_iii{%
+    \xintAssign\xintDivision\factorize_N\factorize_M\to
+        \factorize_Q\factorize_R
+    \xintSgnFork{\xintSgn\factorize_R}%
+        {}%
+        {\edef\factorize_exp{\xintInc{\factorize_exp}}%
+         \let\factorize_N\factorize_Q 
+         \factorize_iii}%
+        {\factorize_iv}% 
+}
+
+ \def\factorize_iv{%
+    \if\xintSgn{\factorize_exp}1%
+       \edef\factors{\factors{{\factorize_M}{\factorize_exp}{\factorize_N}}}%
+    \fi
+    \if\expandafter\XINT_isOne\expandafter{\factorize_N}1%
+    \else
+       % here N>1, N=QM+R (0<R<Q) is < M(Q+1) and N has no prime factors
+       % at most equal to M. If a prime P>M divides N, the
+       % quotient N/P will be < Q+1, hence at most Q. If Q<=M, then
+       % N/P must be 1 else there would be some prime <=M dividing N.
+       \if\xintGeq\factorize_M\factorize_Q 1% implies that N is prime
+          \edef\factors{\factors{{\factorize_N}{1}{1}}}% we stop here
+       \else % we go on testing with bigger factors
+          % \edef\factorize_M{\xintInc{\xintInc{\factorize_M}}}%
+          \edef\factorize_M{\xintiAdd \factorize_M 2}%
+          \def\factorize_exp{0}%
+          \expandafter \expandafter \expandafter \factorize_iii
+       \fi
+    \fi
+}
+
+\catcode`\_ 8
+
+%% We now define the macro \FactorTree which will produce a tree
+%% displaying the factorization, 
+%% using TikZ+forest (for the bracket syntax, much easier to deal with compared
+%% to the braces-based child-node native TikZ tree syntax)
+\catcode`\_ 8
+
+\def\auxiliarymacroa #1{\auxiliarymacrob #1}
+\def\auxiliarymacrob #1#2#3{${#1}^{#2}$&\np{#3}\tabularnewline\hline}
+
+\newcommand*\displayfactorization[1][.2\linewidth]{%
+	\begin{tabular}{>{\rule{0pt}{11pt}}c|>{\raggedright}p{#1}}%
+		\xintApplyUnbraced\auxiliarymacroa{\factors}
+	\end{tabular}\hskip.5em plus .125em minus .125em }
+
+%% We now define the macro \FactorTree which will produce a tree
+%% displaying the factorization, 
+%% using TikZ+forest (for the bracket syntax, much easier to deal with compared
+%% to the braces-based child-node native TikZ tree syntax)
+
+
+
+\makeatletter
+
+\newtoks\FactorTreeA
+\newtoks\FactorTreeB
+
+\newcommand*{\FactorsToTree@}[3]{%
+    \ifnum #2=1 % 
+       \expandafter\@firstoftwo
+    \else
+       \expandafter\@secondoftwo
+    \fi
+    % exponent #2 is 1, so don't print it
+    {\xintSgnFork{\xintCmp{#3}{1}}% check to see if end has been reached
+    {}%
+        % here, this is the last triplet and it has the shape {P}{1}{1}
+        % and P was already inserted as tree node in the previous step
+        % and the forest syntax allows to insert options here
+    {\FactorTreeA\expandafter{\the\FactorTreeA ,draw,circle}}%
+    {\FactorTreeA\expandafter{\the\FactorTreeA 
+                             [{${#1}$}]
+                             [{${#3}$}%
+                             }%
+     \FactorTreeB\expandafter{\the\FactorTreeB ]}%
+    }}%
+    % exponent #2 is > 1
+    {\xintSgnFork{\xintCmp{#3}{1}}% check to see if end has been reached
+    {}%
+    {\FactorTreeA\expandafter{\the\FactorTreeA
+                              [{${#1}^{#2}$}]
+                              %[1]%
+                              }%
+    }%
+    {\FactorTreeA\expandafter{\the\FactorTreeA 
+                             [{${#1}^{#2}$}]
+                             [{$#3$}%
+                             }%
+     \FactorTreeB\expandafter{\the\FactorTreeB ]}%
+    }}%
+}
+
+\newcommand*{\FactorsToTree}[1]{\FactorsToTree@ #1}
+
+% for factors displayed inline 
+
+\def\@factorinliner  #1{\@factorinliner@ #1}
+\def\@factorinliner@ #1#2#3{\ifnum #2>1 \expandafter\@firstoftwo\else
+                                        \expandafter\@secondoftwo\fi
+                            {{#1}^{#2}}{#1}}
+\def\FactorsInline{%
+    \xintListWithSep\times
+             {\xintApply\@factorinliner{\expandafter\@gobble\factors}}%
+}
+
+\newlength{\horizontalshift}  % for positioning of the edges from the tree top
+\newsavebox{\NandFactors}
+
+\newcommand*{\FactorTree}[1]{%
+    \factorize{#1}%
+    \sbox{\NandFactors}{$#1=\FactorsInline$}%
+    \setlength{\horizontalshift}{(\wd\NandFactors-\widthof{$#1$})/2}%
+    \FactorTreeA{}%
+    \FactorTreeB{}%
+    \bracketset{action character=@}%
+    \xintApplyUnbraced\FactorsToTree{\expandafter\@gobble\factors}%
+    \begin{forest}
+      for tree={edge path={\noexpand\path [\forestoption{edge}]
+                                (!u.south)--(.child anchor);}},
+      where={level()==1}
+        {edge path= {\noexpand\path [\forestoption{edge}]
+            ($(!u.south)-(\the\horizontalshift,0cm)$)--(.child anchor);}}{},
+      where={n()==1}{draw,circle}{},
+      [{\box\NandFactors}, right=\horizontalshift,
+      @\the\FactorTreeA
+      @\the\FactorTreeB
+      ]
+    \end{forest}
+}
+
+\makeatother

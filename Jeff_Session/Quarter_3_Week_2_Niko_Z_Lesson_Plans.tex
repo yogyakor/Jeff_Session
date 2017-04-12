@@ -1,0 +1,240 @@
+\documentclass[12pt,compress,leqno]{beamer}
+%\includeonlyframes{plan}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+%\setbeamercovered{transparent}
+\setbeamercolor{alerted text}{fg=magenta}
+
+%\usetheme{Ilmenau}
+\usetheme{Warsaw} %goes with shadow outer theme
+%\usetheme{AnnArbor}
+%\usetheme{Malmoe}
+%\usetheme{Goettingen}
+%\usetheme{JLTree}
+%\usetheme{metropolis}
+%\usetheme{progressbar}
+    %\progressbaroptions{frametitle=picture-section,
+    %headline=sections,imagename=images/woodstock2}
+    % headline=none or headline=sections
+
+%\useoutertheme{infolines}
+%\useoutertheme{split}  %split is included in Malmoe beamer theme 
+
+%\usecolortheme{owl}
+%\usecolortheme{beaver} %dark red text, gray header, white background
+%\usecolortheme{crane}
+%\usecolortheme{spruce}
+%\usecolortheme{seahorse}
+%\usecolortheme{monarca}
+%\usecolortheme{albatross}
+%\usecolortheme{whale}
+%\usecolortheme{dolphin}
+%\usecolortheme{magpie}
+\usecolortheme[named=purple]{structure} % purple, cyan, brown, red
+
+%\usefonttheme{professionalfonts}
+\usepackage{iwona}
+%\usepackage{FiraSans}
+%\usepackage{FiraMono}
+
+%\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{wasysym}
+\usepackage{gensymb}
+\usepackage{amssymb}
+\usepackage[misc]{ifsym} %for dice
+\usepackage{epsdice}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+%\usepackage{IEEEtrantools}
+
+\usepackage{calc} % for \widthof
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+\usepackage{forest}
+\usepackage{xint}
+\usepackage{xintexpr}
+\usepackage{array}
+\usepackage[np]{numprint}
+\usepackage{xparse}
+\usepackage{mathtools}
+
+\usepackage{pstricks-add}
+\usetikzlibrary{matrix}
+\usepackage{tkz-euclide}
+\usetkzobj[all]
+\usepackage{xlop}
+\usepackage{tcolorbox}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable} % For \pgfplotstableread
+\pgfplotsset{width=1\linewidth,compat=1.9}
+\usepackage{pgf-pie}
+\usepackage[makeroom]{cancel}
+\usepackage{xmpmulti}
+\usepackage{xparse}
+\usepackage{scalerel}
+%\usepackage{prerex}
+
+%This section loads external code for specific math related tasks
+\input{Woodstock_Template/FactorTree}
+\input{Woodstock_Template/Fill_in_the_blank}
+\input{longdiv}
+\input{Woodstock_Template/Number_line}
+\input{Woodstock_Template/Probability_Tree_Step_by_Step}
+
+%This section defines custom color commands
+
+\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
+\definecolor{crimson}{rgb}{0.86, 0.08, 0.24}
+
+\definecolor{kugreen}{RGB}{50,93,61}
+\definecolor{kugreenlys}{RGB}{132,158,139}
+\definecolor{kugreenlyslys}{RGB}{173,190,177}
+\definecolor{kugreenlyslyslys}{RGB}{214,223,216}
+
+%\usecolortheme[named=kugreen]{structure}
+%\usecolortheme[named=crimson]{structure}
+
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\bluebf}[1]{\textbf{\textcolor{blue}{#1}}}
+%\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\redbf}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\purple}[1]{\textcolor{purple}{#1}}
+\newcommand{\purplebf}[1]{\textbf{\textcolor{purple}{#1}}}
+\newcommand{\greenbf}[1]{\textbf{\textcolor{green!70!black}{#1}}}
+\newcommand{\kugreenbf}[1]{\textbf{\textcolor{kugreen!70!black}{#1}}}
+\newcommand{\brown}[1]{\textcolor{brown}{#1}}
+\newcommand{\brownbf}[1]{\textbf{\textcolor{brown}{#1}}}
+\newcommand{\crimson}[1]{\textcolor{crimson}{#1}}
+\newcommand{\crimsonbf}[1]{\textbf{\textcolor{crimson}{#1}}}
+\newcommand{\airforceblue}[1]{\textcolor{airforceblue}{#1}}
+\newcommand{\airforcebluebf}[1]{\textbf{\textcolor{airforceblue}{#1}}}
+
+%\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\kugreen}[1]{\textcolor{kugreen}{#1}}
+\newcommand{\orange}[1]{\textcolor{orange}{#1}}
+\newcommand{\orangebf}[1]{\textbf{\textcolor{orange}{#1}}}
+
+
+%This section defines custom symbols and signs commonly used throughout presentation
+
+\newcommand{\mangahightext}{\textbf{{\textcolor{orange!90!black}{Manga}\textcolor{airforceblue}{High }}}\includegraphics[width=0.04\linewidth]{Images/mangahighlogo}\hspace{3pt}}
+
+\newcommand{\mangahighlogo}{\includegraphics[width=0.15\linewidth]{Images/mangahigh}\hspace{3pt}}
+\newcommand{\mangahighheader}{\includegraphics[width=0.24\linewidth]{Images/mangahighheader}\hspace{5pt}}
+\newcommand{\khanacademy}{\includegraphics[width=0.03\linewidth]{Images/khanacademyleaf}{\hspace{1pt}\bf KHAN}ACADEMY\hspace{3pt}}
+\newcommand{\mathster}{\textbf{\textcolor{red}{Mathster }}}
+\newcommand{\webassign}{\textbf{\textit{Web}}\textbf{\textcolor{crimson!50!red}{Assign }}}
+\newcommand{\textbook}{\redbf{Textbook }}
+\newcommand{\Textbook}{\redbf{\TeX tbook }}
+\newcommand{\Texbook}{\redbf{\TeX tbook }}
+\newcommand{\whiteboards}{\greenbf{Whiteboards }}
+\newcommand{\saxontwo}{\href{http://saxontwo.nikoz.academy}{\textit{\airforcebluebf{http://saxontwo.nikoz.academy}}}}
+\newcommand{\saxonthree}{\href{http://saxonthree.nikoz.academy}{\textit{\airforcebluebf{http://saxonthree.nikoz.academy}}}}
+\newcommand{\algebraone}{\href{http://algebra1.nikoz.academy}{\textit{\airforcebluebf{http://algebra1.nikoz.academy}}}}
+
+%This section defines custom commands related to \enumerate and \itemize environments
+
+\newcommand*\rightarrowitem{\item[\textcolor{black}{$\Rightarrow$}]}
+\newcommand{\dur}[1]{\hfill\textit{(#1 min)}}
+\newcommand{\question}{\purplebf{Question of the Day! }}
+\newcommand{\questionitem}[1]{\item \purplebf{Question of the Day! } \dur{#1}}
+\newcommand{\whiteboardskills}[1]{\item \greenbf{Whiteboards } Skills Development \dur{#1}}
+
+\newcommand{\partab}{\par\vspace*{4pt}\hspace*{15pt}}
+
+
+%This section defines \rcancel - cancel with red line
+
+\newcommand{\rcancel}[1]{%
+	\tikz[baseline=(tocancel.base)]{
+		\node[inner sep=0pt,outer sep=0pt] (tocancel) {#1};
+		\draw[red] (tocancel.south west) -- (tocancel.north east);
+	}%
+}
+
+%This section defines command to shift line tags in \align and related environments
+\makeatletter 
+\newcommand{\leqnomode}{\tagsleft@true}
+\newcommand{\reqnomode}{\tagsleft@false}
+\makeatother
+
+
+%this section defines the \arc symbol
+\makeatletter
+\DeclareFontFamily{U}{tipa}{}
+\DeclareFontShape{U}{tipa}{m}{n}{<->tipa10}{}
+\newcommand{\arc@char}{{\usefont{U}{tipa}{m}{n}\symbol{62}}}%
+
+\newcommand{\arc}[1]{\mathpalette\arc@arc{#1}}
+
+\newcommand{\arc@arc}[2]{%
+	\sbox0{$\m@th#1#2$}%
+	\vbox{
+		\hbox{\resizebox{\wd0}{\height}{\arc@char}}
+		\nointerlineskip
+		\box0
+	}%
+}
+\makeatother
+
+ %this section defines fancy \pi typesetting
+\newlength\curht   
+\def\defaultdimfrac{.98}
+\def\defaultstartht{\baselineskip}
+\newcommand\diminish[2][\defaultdimfrac]{%
+	\curht=\defaultstartht\relax
+	\def\dimfrac{#1}%
+	\diminishhelpA{#2}%
+}
+\newcommand\diminishhelpA[1]{%
+	\expandafter\diminishhelpB#1\relax%
+}
+\def\diminishhelpB#1#2\relax{%
+	\scaleto{\strut#1}{\curht}%
+	\curht=\dimfrac\curht\relax%
+	\ifx\relax#2\relax\else\diminishhelpA{#2}\fi%
+}
+\def\pinum{3.14159265358979323846264338327950288419716939937510}
+
+%\AtBeginSection[]
+%{
+%	\begin{frame} %
+%		\frametitle{Table of Contents}
+%		\tableofcontents[currentsection,
+%		sectionstyle=show,
+%		subsectionstyle=hide/hide,
+%		]
+%	\end{frame}
+%}
+
+%\AtBeginSubsection[]
+%{
+%	\begin{frame}<beamer>
+	%	\begin{multicols}{2}
+%			\tableofcontents[currentsection,
+%			sectionstyle=show/hide,
+%			subsectionstyle=show/shade,
+%			hideothersubsections]
+	%	\end{multicols}
+%	\end{frame}
+%}
+
+\input{title}
+
+\begin{document}
+	
+	
+\frame{\titlepage}
+\logo{\includegraphics[width=0.08\linewidth]{Images/woodstock}}
+%\color{blue}	
+\include{Content}
+%\input{Woodstock_Template/Templates}
+
+\end{document}
+
+

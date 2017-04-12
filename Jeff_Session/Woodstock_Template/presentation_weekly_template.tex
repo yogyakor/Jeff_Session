@@ -1,0 +1,219 @@
+\documentclass[12pt,compress,leqno]{beamer}
+%\includeonlyframes{plan}
+%\usetheme{progressbar}
+%\usetheme{Ilmenau}
+%\usetheme{Warsaw} %goes with shadow outer theme
+%\usetheme{AnnArbor}
+%\usetheme{Malmoe}
+\usetheme{Goettingen}
+%\usetheme{JLTree}
+%\usetheme{metropolis}
+%\useoutertheme{infolines}
+
+%\usecolortheme{owl}
+%\useoutertheme{split}  %split is included in Malmoe beamer theme 
+%\usecolortheme{beaver} %dark red text, gray header, white background
+%\usecolortheme{crane}
+%\usecolortheme{spruce}
+%\usecolortheme{seahorse}
+%\usecolortheme{monarca}
+%\usecolortheme{albatross}
+\usecolortheme{whale}
+%\usecolortheme{dolphin}
+%\usecolortheme{magpie}
+
+%\usefonttheme{professionalfonts}
+%\progressbaroptions{frametitle=picture-section,headline=sections,imagename=images/woodstock2}
+% headline=none or headline=sections
+%\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+\setbeamercolor{alerted text}{fg=magenta}
+
+
+%\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{wasysym}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{gensymb}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{iwona}
+\usepackage{wrapfig}
+\usepackage[misc]{ifsym}
+\usepackage{epsdice}
+%\usepackage{IEEEtrantools}
+
+\usepackage{calc} % for \widthof
+
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+\usepackage{forest}
+
+\usepackage{xint}
+\usepackage{xintexpr}
+\usepackage{array}
+\usepackage[np]{numprint}
+
+\usepackage{xparse}
+
+\usepackage{mathtools}
+
+\input{Woodstock_Template/FactorTree}
+\usepackage{pstricks-add}
+\usetikzlibrary{matrix}
+\usepackage{tkz-euclide}
+\usetkzobj[all]
+\usepackage{xlop}
+\usepackage{tcolorbox}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable} % For \pgfplotstableread
+\pgfplotsset{width=1\linewidth,compat=1.9}
+
+\usepackage\{pgf-pie}
+\usepackage[makeroom]{cancel}
+\usepackage{xmpmulti}
+\usepackage{xparse}
+\usepackage{scalerel}
+
+%\input{longdiv}
+\input{Woodstock_Template/Fill_in_the_blank}
+\input{Woodstock_Template/Number_line}
+% \usepackage{FiraSans}
+%\usepackage{FiraMono}
+
+%\usepackage{prerex}
+
+\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
+\newcommand{\airforcebluebf}[1]{\textbf{\textcolor{airforceblue}{#1}}}
+
+\definecolor{crimson}{rgb}{0.86, 0.08, 0.24}
+
+\definecolor{kugreen}{RGB}{50,93,61}
+\definecolor{kugreenlys}{RGB}{132,158,139}
+\definecolor{kugreenlyslys}{RGB}{173,190,177}
+\definecolor{kugreenlyslyslys}{RGB}{214,223,216}
+
+%\usecolortheme[named=kugreen]{structure}
+\newcommand{\rcancel}[1]{%
+	\tikz[baseline=(tocancel.base)]{
+		\node[inner sep=0pt,outer sep=0pt] (tocancel) {#1};
+		\draw[red] (tocancel.south west) -- (tocancel.north east);
+	}%
+}
+
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\bluebf}[1]{\textbf{\textcolor{blue}{#1}}}
+\newcommand{\redbf}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\purplebf}[1]{\textbf{\textcolor{purple}{#1}}}
+\newcommand{\greenbf}[1]{\textbf{\textcolor{green!70!black}{#1}}}
+\newcommand{\kugreenbf}[1]{\textbf{\textcolor{kugreen!70!black}{#1}}}
+\newcommand{\brownbf}[1]{\textbf{\textcolor{brown}{#1}}}
+
+\newcommand{\brown}[1]{\textcolor{brown}{#1}}
+%\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\purple}[1]{\textcolor{purple}{#1}}
+%\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\kugreen}[1]{\textcolor{kugreen}{#1}}
+\newcommand{\orange}[1]{\textcolor{orange}{#1}}
+\newcommand{\orangebf}[1]{\textbf{\textcolor{orange}{#1}}}
+
+\newcommand{\partab}{\par\vspace*{4pt}\hspace*{15pt}}
+\newcommand{\dur}[1]{\hfill\textit{(#1 min)}}
+
+\newcommand{\crimsonbf}[1]{\textbf{\textcolor{crimson}{#1}}}
+
+\newcommand{\mangahightext}{\textbf{{\textcolor{orange!90!black}{Manga}\textcolor{airforceblue}{High }}}\includegraphics[width=0.04\linewidth]{Images/mangahighlogo}\hspace{3pt}}
+
+\newcommand{\mangahighlogo}{\includegraphics[width=0.15\linewidth]{Images/mangahigh}\hspace{3pt}}
+\newcommand{\mangahighheader}{\includegraphics[width=0.24\linewidth]{Images/mangahighheader}\hspace{5pt}}
+\newcommand{\mathster}{\textbf{\textcolor{red}{Mathster }}}
+\newcommand{\webassign}{\textbf{\textit{Web}}\textbf{\textcolor{crimson!50!red}{Assign }}}
+\newcommand{\question}{\purplebf{Question of the Day! }}
+\newcommand{\questionitem}[1]{\item \purplebf{Question of the Day! } \dur{#1}}
+\newcommand{\textbook}{\redbf{Textbook }}
+\newcommand{\Textbook}{\redbf{\TeX tbook }}
+\newcommand{\whiteboards}{\greenbf{Whiteboards }}
+\newcommand{\whiteboardskills}[1]{\item \greenbf{Whiteboards } Skills Development \dur{#1}}
+
+\newcommand{\saxontwo}{\textit{\airforcebluebf{http://saxontwo.nikoz.academy}}}
+\newcommand{\saxonthree}{\textit{\airforcebluebf{http://saxonthree.nikoz.academy}}}
+\newcommand{\algebraone}{\textit{\airforcebluebf{http://algebra1.nikoz.academy}}}
+
+
+\newcommand{\khanacademy}{\includegraphics[width=0.03\linewidth]{Images/khanacademyleaf}{\hspace{1pt}\bf KHAN}ACADEMY\hspace{3pt}}
+
+\newcommand*\rightarrowitem{\item[\textcolor{black}{$\Rightarrow$}]}
+
+
+\makeatletter
+\newcommand{\leqnomode}{\tagsleft@true}
+\newcommand{\reqnomode}{\tagsleft@false}
+\makeatother
+
+\makeatletter
+\DeclareFontFamily{U}{tipa}{}
+\DeclareFontShape{U}{tipa}{m}{n}{<->tipa10}{}
+\newcommand{\arc@char}{{\usefont{U}{tipa}{m}{n}\symbol{62}}}%
+
+\newcommand{\arc}[1]{\mathpalette\arc@arc{#1}}
+
+\newcommand{\arc@arc}[2]{%
+	\sbox0{$\m@th#1#2$}%
+	\vbox{
+		\hbox{\resizebox{\wd0}{\height}{\arc@char}}
+		\nointerlineskip
+		\box0
+	}%
+}
+\makeatother
+
+
+\newlength\curht
+\def\defaultdimfrac{.98}
+\def\defaultstartht{\baselineskip}
+\newcommand\diminish[2][\defaultdimfrac]{%
+	\curht=\defaultstartht\relax
+	\def\dimfrac{#1}%
+	\diminishhelpA{#2}%
+}
+\newcommand\diminishhelpA[1]{%
+	\expandafter\diminishhelpB#1\relax%
+}
+\def\diminishhelpB#1#2\relax{%
+	\scaleto{\strut#1}{\curht}%
+	\curht=\dimfrac\curht\relax%
+	\ifx\relax#2\relax\else\diminishhelpA{#2}\fi%
+}
+\def\pinum{3.14159265358979323846264338327950288419716939937510}
+
+
+%\date{}
+%\subject{}
+%\setbeamercovered{transparent}
+%\setbeamertemplate{navigation symbols}{}
+%\AtBeginSection[]
+%{
+%	\begin{frame} %
+%		\frametitle{Table of Contents}
+%		\tableofcontents[currentsection,
+%		sectionstyle=show,
+%		subsectionstyle=hide/hide,
+%		]
+%	\end{frame}
+%}
+
+%\AtBeginSubsection[]
+%{
+%	\begin{frame}<beamer>
+	%	\begin{multicols}{2}
+%			\tableofcontents[currentsection,
+%			sectionstyle=show/hide,
+%			subsectionstyle=show/shade,
+%			hideothersubsections]
+	%	\end{multicols}
+%	\end{frame}
+%}
+

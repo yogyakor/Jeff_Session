@@ -1,0 +1,60 @@
+\makeatletter
+\def\tikz@collect@child hild{% 
+	\pgfutil@ifnextchar<{\tikz@collect@child@overlay}% 
+	{\pgfutil@ifnextchar[{\tikz@collect@childA}{\tikz@collect@childA[]}}% 
+} 
+\def\tikz@collect@child@overlay<#1>{% 
+	\pgfutil@ifnextchar[{\tikz@collect@child@@overlay{#1}}{\tikz@collect@childA[child 
+		overlay={#1}]}}%} 
+
+\def\tikz@collect@child@@overlay#1[{\tikz@collect@childA[child overlay={#1},} 
+
+\def\tikzprocessoverlay#1#2#3{% 
+	\def\beamer@doifinframe{#2}% 
+	\def\beamer@doifnotinframe{#3}% 
+	\beamer@masterdecode{#1}% 
+	\beamer@donow% 
+} 
+
+% Extra hackery to allow preactions on different layers. 
+% 
+\def\tikz@extra@preaction#1{% 
+	{% 
+		\pgfsys@beginscope% 
+		\setbox\tikz@figbox=\box\voidb@x% 
+		\begingroup\tikzset{#1}\expandafter\endgroup% 
+		\expandafter\def\expandafter\tikz@preaction@layer\expandafter{\tikz@preaction@layer}% 
+		\ifx\tikz@preaction@layer\pgfutil@empty% 
+		\path[#1];% do extra path 
+		\else% 
+		\begin{pgfonlayer}{\tikz@preaction@layer}% 
+			\path[#1];% 
+		\end{pgfonlayer} 
+		\fi% 
+		\pgfsyssoftpath@setcurrentpath\tikz@actions@path% restore 
+		\tikz@restorepathsize% 
+		\pgfsys@endscope% 
+	}% 
+} 
+\let\tikz@preaction@layer=\pgfutil@empty 
+
+\tikzset{preaction layer/.store in=\tikz@preaction@layer} 
+
+\makeatother
+
+\tikzset{% 
+	child overlay/.code={% 
+		\tikzprocessoverlay{#1}{}% 
+		{% 
+			\tikzset{% 
+				edge from parent/.style={draw=none}, 
+				every node/.style={ 
+					draw=none, fill=none, 
+					execute at begin node={\setbox0=\hbox\bgroup\hskip0pt\let\\=\relax}, 
+					execute at end node=\egroup\phantom{\box0} 
+				},%
+				bag/.style={draw=none}%
+			}% 
+		}% 
+	} 
+}
